@@ -12,4 +12,4 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           command: monitor
-          args: --remote-repo-url=woof-monitor --project-name="java-woof:$GITHUB_SHA"
+          args: --remote-repo-url=woof-monitor --project-name=java-woof
