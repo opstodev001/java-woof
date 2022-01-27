@@ -1,0 +1,24 @@
+name: Snyk Delta - Gradle
+on: push
+jobs:
+  delta:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/setup-node@v2
+        name: Install Snyk CLI and Snyk Delta
+        with:
+          node-version: '14'
+      - run: npm install -g snyk
+      - run: npm install -g snyk-delta
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+      - name: Run Snyk Delta
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+          SNYK_ORG: ${{ secrets.SNYK_ORG }}
+          SNYK_PROJECT: ${{ secrets.SNYK_PROJECT }}
+        run: snyk test --json --print-deps | snyk-delta --baselineOrg $SNYK_ORG --baselineProject $SNYK_PROJECT
